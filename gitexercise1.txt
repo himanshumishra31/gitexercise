@@ -1,0 +1,234 @@
+# make directory gitexcercise
+mkdir gitexercise
+
+# change current directory to gitexercise
+cd gitexercise
+
+# creating empty repository
+git init
+output
+Initialized empty Git repository in /Users/vins/Desktop/gitexercise/.git/
+
+# creating some files using touch command
+touch file1.rb
+
+# add all files in the current directory to staging area
+git add .
+
+# check commit to be done
+git status
+output
+On branch master
+
+Initial commit
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+  new file:   file1.rb
+  new file:   file2.rb
+  new file:   file3.rb
+
+# commit changes with a message
+git commit -m "Files added"
+output
+[master (root-commit) dfd1e9f] Files added
+ 3 files changed, 3 insertions(+)
+ create mode 100644 file1.rb
+ create mode 100644 file2.rb
+ create mode 100644 file3.rb
+
+# add a gitignore file ( file1.rb and .DS_Store is ignored in gitignore file)
+touch .gitignore
+
+# add gitignore file to staging area
+git add .gitignore
+
+# check status
+git status
+output
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+  new file:   .DS_Store
+  new file:   .gitignore
+
+# commit changes with a message
+git commit -m "added gitignore"
+output
+[master 0aa5a6b] added gitignore
+ 2 files changed, 2 insertions(+)
+ create mode 100644 .DS_Store
+ create mode 100644 .gitignore
+
+# delete file2.rb && commit it
+git rm file2.rb
+output
+rm 'file2.rb'
+
+git commit -m "file2.rb deleted"
+output
+[master 6b87f48] file2.rb deleted
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 file2.rb
+
+#create changes and revert those changes using git when those changes are not added to staging are
+git checkout -- file3.rb
+
+#create changes and revert those changes after adding changes to staging area
+git add file3.rb
+
+git reset HEAD file3.rb
+
+#create change and revert those changes after committing those changes
+
+git add file3.rb
+
+git commit -m "modified file3.rb"
+output
+[master 5120e21] modified file3.rb
+ 2 files changed, 1 insertion(+)
+ delete mode 100644 .DS_Store
+
+# revert most recent commit
+git revert HEAD
+output
+[master 9fbdee2] Revert "modified file3." modified
+ 2 files changed, 1 deletion(-)
+ create mode 100644 .DS_Store
+
+# create branch feature1 and feature2 from master
+git branch feature1
+git branch feature2
+
+# delete branch feature2
+git branch -D feature2
+output
+Deleted branch feature2 (was 9fbdee2).
+
+# switch branch to feature1
+git checkout feature1
+output
+Switched to branch 'feature1'
+
+# some commits in feature1 branch
+
+git add file3.rb
+
+git commit -m "modified file3.rb in feature1 branch"
+output
+[feature1 849595a] modified file3.rb in feature1 branch
+ 1 file changed, 1 insertion(+)
+
+# Make some commits on branch "master"
+
+git checkout master
+
+git add file3.rb
+
+git commit -m "changes in master branch"
+output
+[master 57d33fb] changes in master branch
+ 1 file changed, 1 insertion(+)
+
+# merge branch "feature1" in "master" (make some conflicts by changing same file on same line in both the branches)
+
+git branch # check branch and switch to master if in feature
+
+git merge feature1
+output
+Auto-merging file3.rb
+CONFLICT (content): Merge conflict in file3.rb
+Automatic merge failed; fix conflicts and then commit the result.
+
+# solved the conflicts and then commit
+
+git add file3.rb
+git commit -m "conflicts solved"
+output
+[master f9f7938] conflicts solved
+
+# create branch "feature2" from master
+
+git branch feature2
+
+git branch
+output
+  feature1
+  feature2
+* master
+
+git checkout feature2
+
+# Make some commits on "feature2".
+
+git add file3.rb
+git commit -m "commit in branch feature2"
+output
+[feature2 4b754be] commit in branch feature2
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+# rebase branch "master" in "feature2"
+
+git checkout master
+git add file3.rb
+git commit -m "changes for rebase conflict"
+output
+[master 1108d14] changes for rebase conflict
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+git checkout feature2
+git rebase master
+# conflicts showed and then manually solved
+
+git add file3.rb
+git commit -m "conflicts added"
+output
+[detached HEAD ea1a10d] conflicts solved
+ 1 file changed, 1 insertion(+)
+
+git rebase --continue
+output
+
+# differences between "merge" and "rebase" in above cases.
+
+git rebase creates a linear history which is easy to understand
+on the other hand git merge creates a non linear(tree typed structure)
+
+git merge - doesnt rewrites the history,
+git rebase - thumb rule is never perform rebasing on a public repository
+
+# git stash
+
+git checkout master # switch to master branchh
+
+git add file3.rb # changes added to staging area in master branch
+
+git stash save "changes in file3.rb master"
+output
+Saved working directory and index state On master: changes in file3.rb master
+HEAD is now at 7ddaec5 file3.rb modified
+
+git checkout feature1
+output
+Switched to branch 'feature1'
+
+git stash pop
+
+git add -u
+
+git commit -m "Changes stashed from master commited in feature1 branch"
+output
+[feature1 2e2b352] Changes stashed from master commited in feature1 branch
+ 1 file changed, 3 insertions(+)
+
+# create a repository on github for your working repository and push changes on remote repository.
+
+git remote add origin https://github.com/himanshumishra31/gitexercise.git
+
+git push origin --all
+
+
+
+
